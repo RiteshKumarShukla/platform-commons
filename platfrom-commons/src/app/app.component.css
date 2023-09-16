@@ -1,5 +1,4 @@
-/* Navbar styles */
-/* Use Apple font family for the entire navbar */
+/* Styles for the header, nav, logo, and menu */
 header.sticky,
 nav,
 .logo h1,
@@ -7,6 +6,55 @@ nav,
   font-family: "Apple", sans-serif;
 }
 
+header.sticky {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 100;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100%; /* Adjust max-width for responsiveness */
+  padding: 10px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  max-height: 50px;
+  width: auto;
+  margin-right: 10px;
+  width: 70%;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #4a154b;
+  font-weight: bold;
+  margin-right: 20px;
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: #00a0dc;
+  text-decoration: underline;
+}
+
+.active {
+  text-decoration: underline;
+  color: #00a0dc;
+}
 
 /* Styles for the cart icon and count */
 .menu a i {
@@ -22,60 +70,36 @@ nav,
   font-size: 14px;
   margin-left: -10px;
   position: absolute;
-  top: 1px; /* Position it above the cart icon */
+  top: 1px; 
 }
 
-header.sticky {
-  position: sticky;
-  top: 0;
-  background-color: white;
-  z-index: 100;
-}
+/* Media query for small screens */
+@media (max-width: 768px) {
+  .menu {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
 
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 20px;
-}
+  .menu a {
+    margin: 5px 0;
+  }
+  .cart-count {
+    position: absolute;
+    top:40px; 
+  }
+  
+  #cart {
+    margin-left: 30px;
+  }
 
-.logo {
-  display: flex;
-  align-items: center;
-}
-
-.logo img {
-  max-height: 50px;
-  width: auto;
-  margin-right: 10px;
-  width: 70%;
-}
-
-.menu a {
-  text-decoration: none;
-  color: #4a154b;
-  margin-right: 20px;
-  font-weight: bold;
-  transition: color 0.3s;
-}
-
-.menu a:hover {
-  color: #00a0dc;
-  text-decoration: underline;
-}
-
-.active {
-  text-decoration: underline;
-  color: #00a0dc;
 }
 
 
-/* Footer styles */
+
 footer {
-  color:#4a154b;
-  background-color:lightgrey;
+  color: #4a154b;
+  background-color: lightgrey;
   text-align: center;
   padding: 20px;
   margin-top: 70px;
@@ -83,19 +107,35 @@ footer {
 
 /* Footer links styles */
 .footer-links a {
-  color:#4a154b;
+  color: #4a154b;
   text-decoration: none;
   margin: 0 10px;
   font-size: 1.2em;
 }
 
 .footer-links a:hover {
-  color:#00a0dc
+  color: #00a0dc;
 }
 
 /* Credit text style */
 .credit {
   margin-top: 10px;
   font-size: 0.9em;
-  /* color: #ccc; */
+}
+
+/* Media query for small screens */
+@media (max-width: 768px) {
+  footer {
+    /* padding: 10px; */
+    font-size: smaller;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-links a {
+    margin: 2px;
+  }
 }
