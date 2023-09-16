@@ -1,18 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderService } from '../order.service';
-import Swal from 'sweetalert2';
-
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  weight: number;
-  quantity: number;
-}
+import { HttpClient } from '@angular/common/http';
 
 interface Order {
-  cartItems: CartItem[];
+  cartItems: any[];
   orderTotal: number;
   estimatedDeliveryDate: string;
   id: number;
@@ -24,19 +14,18 @@ interface Order {
   styleUrls: ['./confirm-order.component.css']
 })
 export class ConfirmOrderComponent implements OnInit {
-  orderData: Order | null = null;
+  orders: Order[] = [];
 
-  constructor(private orderService: OrderService) { }
+  constructor(private http: HttpClient) { }
 
-  async ngOnInit(): Promise<void> {
-    try {
-      this.orderData = await this.orderService.getOrderData().toPromise();
-      console.log(this.orderData);
-      Swal.fire('Order Details', 'Order data fetched successfully', 'success');
-    } catch (error) {
-      console.error('Error fetching order data:', error);
-      Swal.fire('Error', 'Error fetching order data', 'error');
-      // Handle the error (e.g., display a message to the user)
-    }
+  ngOnInit(): void {
+    this.fetchOrders();
+  }
+
+  fetchOrders(): void {
+    this.http.get<Order[]>('https://platform-commons-api.onrender.com/order')
+      .subscribe(data => {
+        this.orders = data;
+      });
   }
 }

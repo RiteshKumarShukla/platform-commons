@@ -1,28 +1,18 @@
-<div class="confirm-order">
-  <h2><i class="fas fa-shopping-cart"></i> Order Summary</h2>
-
-  <div class="order-details" *ngIf="orderData">
+<div *ngFor="let order of orders" class="order-container">
+  <h3><i class="fas fa-file-alt"></i> Order ID: {{ order.id }}</h3>
+  <div *ngFor="let item of order.cartItems" class="order-item">
+    <img [src]="item.image" alt="{{ item.name }}" />
     <div class="item-details">
-      <p>Order ID: {{ orderData.id }}</p>
-      <p>Order Total: ${{ orderData.orderTotal }}</p>
-      <p>Estimated Delivery Date: {{ orderData.estimatedDeliveryDate }}</p>
+      <p>{{ item.name }}</p>
+      <p><i class="fas fa-dollar-sign"></i> Price: ${{ item.price }}</p>
+      <p><i class="fas fa-shopping-cart"></i> Quantity: {{ item.quantity }}</p>
     </div>
   </div>
-
-  <h3>Cart Items:</h3>
-  <div *ngIf="orderData && orderData.cartItems && orderData.cartItems.length > 0">
-    <div *ngFor="let item of orderData.cartItems" class="order-item">
-      <div class="item-details">
-        <p>Product ID: {{ item.id }}</p>
-        <p>Product Name: {{ item.name }}</p>
-        <p><i class="fas fa-dollar-sign"></i> Price: ${{ item.price }}</p>
-        <p>Image: <img [src]="item.image" alt="Product Image"></p>
-        <p>Weight: {{ item.weight }} g</p>
-        <p><i class="fas fa-shopping-basket"></i> Quantity: {{ item.quantity }}</p>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="!orderData || !orderData.cartItems || orderData.cartItems.length === 0">
-    <p>No items in the cart.</p>
+  <div class="order-summary">
+    <p><i class="fas fa-dollar-sign"></i> Total: ${{ order.orderTotal }}</p>
+    <p>
+      <i class="far fa-calendar-alt"></i> Estimated Delivery Date:
+      {{ order.estimatedDeliveryDate }}
+    </p>
   </div>
 </div>
