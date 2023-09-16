@@ -1,0 +1,19 @@
+<div class="product-card" *ngFor="let product of products">
+    <img [src]="product.image" alt="{{ product.name }}" />
+    <h3>{{ product.name }}</h3>
+    <p>Weight: {{ product.weight }}</p>
+    <p>Price: ${{ product.price }}</p>
+  
+    <!-- Show Add to Cart button or quantity controls -->
+    <ng-container *ngIf="!cartControls[product.id] || cartControls[product.id].quantity === 0">
+      <button (click)="addToCart(product)">Add to Cart</button>
+    </ng-container>
+    <ng-container *ngIf="cartControls[product.id] && cartControls[product.id].quantity > 0">
+      <div class="quantity-controls">
+        <button (click)="decreaseQuantity(product.id)">(-)</button>
+        <span>{{ cartControls[product.id].quantity }}</span>
+        <button (click)="increaseQuantity(product.id)">(+)</button>
+      </div>
+    </ng-container>
+  </div>
+  

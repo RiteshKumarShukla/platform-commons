@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "platform-commons": {
+    "platfrom-commons": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/platform-commons",
+            "outputPath": "dist/platfrom-commons",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "platform-commons:build:production"
+              "browserTarget": "platfrom-commons:build:production"
             },
             "development": {
-              "browserTarget": "platform-commons:build:development"
+              "browserTarget": "platfrom-commons:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "platform-commons:build"
+            "browserTarget": "platfrom-commons:build"
           }
         },
         "test": {
@@ -94,5 +94,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "b0eb43b6-1cb4-4e90-9a23-6d619af3a6ce"
   }
 }
