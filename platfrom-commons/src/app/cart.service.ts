@@ -11,7 +11,7 @@ export class CartService {
   private cartControlsSubject = new BehaviorSubject<{ [productId: number]: { isAdding: boolean; quantity: number } }>({});
   cartControls$ = this.cartControlsSubject.asObservable();
 
-  private cartUrl = 'http://localhost:3000/cart';
+  private cartUrl = 'https://platform-commons-api.onrender.com/cart';
 
   constructor(private http: HttpClient) {
     // Fetch cart items from the server initially
@@ -93,7 +93,8 @@ export class CartService {
   }
 
   createOrder(orderPayload: any): Observable<any> {
-    const orderUrl = 'http://localhost:3000/order';  // Adjust the URL for order creation
+    const orderUrl = 'https://platform-commons-api.onrender.com/order';  
     return this.http.post<any>(orderUrl, orderPayload);
   }
+
 }
