@@ -19,7 +19,9 @@ export class CatalogueComponent implements OnInit {
       this.products = data;
     });
 
-    this.cartItems = this.cartService.getCartItems();
+    this.cartService.getCartItems().subscribe((data) => {
+      this.cartItems = data;
+    });
   }
 
   addToCart(product: any): void {
@@ -31,9 +33,7 @@ export class CatalogueComponent implements OnInit {
     this.cartControls[productId].isAdding = true;
 
     setTimeout(() => {
-      // Simulate an asynchronous operation (e.g., adding to the cart)
       this.cartService.addToCart(product);
-      this.cartItems = this.cartService.getCartItems();
       this.cartControls[productId].isAdding = false;
       this.cartControls[productId].quantity = 1;
     }, 1000); // Simulated delay, adjust as needed
@@ -42,6 +42,7 @@ export class CatalogueComponent implements OnInit {
   increaseQuantity(productId: number): void {
     if (this.cartControls[productId] && this.cartControls[productId].quantity >= 0) {
       this.cartControls[productId].quantity++;
+      this.cartService.increaseCartItemQuantity(productId);
     }
   }
 
@@ -49,9 +50,9 @@ export class CatalogueComponent implements OnInit {
     if (this.cartControls[productId] && this.cartControls[productId].quantity > 0) {
       this.cartControls[productId].quantity--;
       if (this.cartControls[productId].quantity === 0) {
-        // If quantity becomes 0, replace with "Add to Cart" button
         this.cartControls[productId].isAdding = false;
       }
+      this.cartService.decreaseCartItemQuantity(productId);
     }
   }
 }
