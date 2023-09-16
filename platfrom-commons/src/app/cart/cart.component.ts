@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService } from '../cart.service';
+import { Router } from '@angular/router';
+import { CartService } from '../cart.service'; // Import CartService
+import { CartDataService } from '../cart-data.service'; // Import CartDataService
 
 @Component({
   selector: 'app-cart',
@@ -9,16 +11,26 @@ import { CartService } from '../cart.service';
 export class CartComponent implements OnInit {
   cartItems: any[] = [];
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private cartDataService: CartDataService, // Inject CartDataService
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    // Fetch cart items from the CartService
     this.cartService.getCartItems().subscribe((data) => {
       this.cartItems = data;
+      // Also, set cart items in CartDataService
+      this.cartDataService.setCartItems(data);
     });
   }
 
   removeFromCart(productId: number): void {
+    // Remove item from the cart using the CartService
     this.cartService.removeFromCart(productId);
+    // Update cart items in CartDataService
+    this.cartDataService.setCartItems(this.cartItems);
   }
 
   calculateOrderTotal(): number {
@@ -31,6 +43,9 @@ export class CartComponent implements OnInit {
   }
 
   checkout(): void {
-    // Implement checkout logic here (e.g., navigate to a confirmation page)
+    console.log('Cart Items:', this.cartItems);
+    this.cartDataService.setCartItems(this.cartItems);
+    // Navigate to "confirm-order" route
+    this.router.navigate(['/confirm-order']);
   }
 }
