@@ -11,8 +11,13 @@ export class CatalogueComponent implements OnInit {
   products: any[] = [];
   cartItems: any[] = [];
   cartControls: { [productId: number]: { isAdding: boolean; quantity: number } } = {};
+  searchText: string = '';
+  selectedSortOption: string = 'priceLowToHigh';
+  selectedFilterOption: string = 'all';
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
 
-  constructor(private productService: ProductService, private cartService: CartService) {}
+  constructor(private productService: ProductService, private cartService: CartService) { }
 
   ngOnInit(): void {
     this.productService.getProducts().subscribe((data) => {
@@ -29,30 +34,76 @@ export class CatalogueComponent implements OnInit {
     if (!this.cartControls[productId]) {
       this.cartControls[productId] = { isAdding: false, quantity: 0 };
     }
-
+  
     this.cartControls[productId].isAdding = true;
-
-    setTimeout(() => {
-      this.cartService.addToCart(product);
-      this.cartControls[productId].isAdding = false;
-      this.cartControls[productId].quantity = 1;
-    }, 1000); // Simulated delay, adjust as needed
+  
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      weight: product.weight,
+      quantity: 1,
+    };
+  
+    // Make a POST request to add the product to the cart
+    this.cartService.addToCart(cartItem).subscribe(
+      () => {
+        // On success, update the UI
+        const existingCartItem = this.cartItems.find((item) => item.id === productId);
+  
+        if (existingCartItem) {
+          existingCartItem.quantity++;
+        } else {
+          this.cartItems.push(cartItem);
+        }
+  
+        this.cartControls[productId].isAdding = false;
+        this.cartControls[productId].quantity = 1;
+      },
+      (error) => {
+        console.error('Error adding to cart:', error);
+        this.cartControls[productId].isAdding = false;
+      }
+    );
   }
-
   increaseQuantity(productId: number): void {
-    if (this.cartControls[productId] && this.cartControls[productId].quantity >= 0) {
-      this.cartControls[productId].quantity++;
+    const cartItem = this.cartItems.find((item) => item.id === productId);
+    if (cartItem && cartItem.quantity >= 0) {
+      cartItem.quantity++;
+  
+      // Make a PATCH request to update the cart item quantity
       this.cartService.increaseCartItemQuantity(productId);
     }
   }
-
+  
   decreaseQuantity(productId: number): void {
-    if (this.cartControls[productId] && this.cartControls[productId].quantity > 0) {
-      this.cartControls[productId].quantity--;
-      if (this.cartControls[productId].quantity === 0) {
+    const cartItem = this.cartItems.find(item => item.id === productId);
+    if (cartItem && cartItem.quantity > 0) {
+      cartItem.quantity--;
+
+      if (cartItem.quantity === 0) {
         this.cartControls[productId].isAdding = false;
       }
+
+      // Use decreaseCartItemQuantity instead of updateCartItemQuantity
       this.cartService.decreaseCartItemQuantity(productId);
     }
   }
+      
+  onSearch(): void {
+    if (this.searchText.trim() !== '') {
+      this.products = this.products.filter(product => product.name.toLowerCase().includes(this.searchText.toLowerCase()));
+
+    }
+  }
+
+  onSort(): void {
+    if (this.selectedSortOption === 'priceLowToHigh') {
+      this.products.sort((a, b) => a.price - b.price);
+    } else if (this.selectedSortOption === 'priceHighToLow') {
+      this.products.sort((a, b) => b.price - a.price);
+    }
+  }
+
 }

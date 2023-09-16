@@ -1,65 +1,92 @@
-
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private cart: any[] = [];
   private cartSubject = new BehaviorSubject<any[]>([]);
+  private cartUrl = 'http://localhost:3000/cart';
 
-  constructor() { }
-
-  addToCart(product: any): void {
-    const existingProduct = this.cart.find(item => item.id === product.id);
-
-    if (existingProduct) {
-      existingProduct.quantity++;
-    } else {
-      this.cart.push({ ...product, quantity: 1 });
-    }
-
-    this.cartSubject.next(this.cart);
+  constructor(private http: HttpClient) {
+    // Fetch cart items from the server initially
+    this.fetchCartItems().subscribe();
   }
 
-  removeFromCart(productId: number): void {
-    const index = this.cart.findIndex(item => item.id === productId);
-    if (index !== -1) {
-      this.cart.splice(index, 1);
-      this.cartSubject.next(this.cart);
-    }
+  private fetchCartItems(): Observable<any[]> {
+    return this.http.get<any[]>(this.cartUrl).pipe(
+      map((data) => {
+        // Flatten the array of arrays into a flat array
+        const flatCartItems = data.reduce((acc, current) => acc.concat(current), []);
+        this.cartSubject.next(flatCartItems);
+        return flatCartItems;
+      })
+    );
   }
 
-  // Implement other cart-related methods for increasing and decreasing item quantities
+  addToCart(product: any): Observable<any> {
+    // Make a POST request to add the product to the cart
+    return this.http.post(this.cartUrl, product).pipe(
+      switchMap(() => {
+        // After successful addition, fetch and update the cart items
+        return this.fetchCartItems();
+      })
+    );
+  }
+
+  removeFromCart(productId: number): Observable<any> {
+    return this.http.delete(`${this.cartUrl}/${productId}`).pipe(
+      switchMap(() => {
+        // After successful removal, fetch and update the cart items
+        return this.fetchCartItems();
+      })
+    );
+  }
 
   getCartItems(): BehaviorSubject<any[]> {
     return this.cartSubject;
   }
 
-  // Add other methods for increasing and decreasing item quantities
   increaseCartItemQuantity(productId: number): void {
-    const product = this.cart.find(item => item.id === productId);
+    const product = this.cartSubject.value.find(item => item.id === productId);
     if (product) {
       product.quantity++;
-      this.cartSubject.next(this.cart);
+
+      // Make a PATCH request to update the cart item quantity on the server
+      this.http.patch(`${this.cartUrl}/${productId}`, { quantity: product.quantity }).subscribe();
+      
+      this.cartSubject.next([...this.cartSubject.value]);
     }
   }
 
   decreaseCartItemQuantity(productId: number): void {
-    const product = this.cart.find(item => item.id === productId);
+    const product = this.cartSubject.value.find(item => item.id === productId);
     if (product && product.quantity > 0) {
       product.quantity--;
+
       if (product.quantity === 0) {
-        // Remove the item from the cart if the quantity is zero
-        const index = this.cart.indexOf(product);
+        const index = this.cartSubject.value.indexOf(product);
         if (index !== -1) {
-          this.cart.splice(index, 1);
+          this.cartSubject.value.splice(index, 1);
         }
       }
-      this.cartSubject.next(this.cart);
+
+      // Make a PATCH request to update the cart item quantity on the server
+      this.http.patch(`${this.cartUrl}/${productId}`, { quantity: product.quantity }).subscribe();
+
+      this.cartSubject.next([...this.cartSubject.value]);
     }
   }
 
-
+  updateCart(cartItems: any[]) {
+    // Make a PUT request to update the entire cart on the server
+    return this.http.put(this.cartUrl, cartItems).pipe(
+      switchMap(() => {
+        // After successful update, fetch and update the cart items
+        return this.fetchCartItems();
+      })
+    );
+  }
 }

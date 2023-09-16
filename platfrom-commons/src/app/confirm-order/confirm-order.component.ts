@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CartDataService } from '../cart-data.service'; 
+import { CartDataService } from '../cart-data.service';
 
 @Component({
   selector: 'app-confirm-order',
