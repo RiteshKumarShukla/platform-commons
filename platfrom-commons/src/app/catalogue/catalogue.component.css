@@ -1,0 +1,62 @@
+/* Add this CSS in your component's CSS file (e.g., catalogue.component.css) */
+
+/* Grid container for the product cards */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(300px, 1fr)
+  ); /* Adjust as needed */
+  gap: 16px; /* Adjust the gap between product cards */
+}
+
+/* Styling for the product card */
+.product-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  height: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Hover effect for the product card */
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Styling for the product image */
+.product-card img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Styling for product details (name, weight, price) */
+.product-card h3 {
+  font-size: 1.2rem;
+  margin: 8px 0;
+  color: #333;
+}
+
+.product-card p {
+  font-size: 1rem;
+  margin: 4px 0;
+  color: #777;
+}
+
+/* Styling for the "Add to Cart" button */
+.product-card button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.product-card button:hover {
+  background-color: #0056b3;
+}
