@@ -8,6 +8,9 @@ import { map, switchMap } from 'rxjs/operators';
 })
 export class CartService {
   private cartSubject = new BehaviorSubject<any[]>([]);
+  private cartControlsSubject = new BehaviorSubject<{ [productId: number]: { isAdding: boolean; quantity: number } }>({});
+  cartControls$ = this.cartControlsSubject.asObservable();
+
   private cartUrl = 'http://localhost:3000/cart';
 
   constructor(private http: HttpClient) {
@@ -53,10 +56,9 @@ export class CartService {
     const product = this.cartSubject.value.find(item => item.id === productId);
     if (product) {
       product.quantity++;
-
       // Make a PATCH request to update the cart item quantity on the server
       this.http.patch(`${this.cartUrl}/${productId}`, { quantity: product.quantity }).subscribe();
-      
+
       this.cartSubject.next([...this.cartSubject.value]);
     }
   }
@@ -88,5 +90,10 @@ export class CartService {
         return this.fetchCartItems();
       })
     );
+  }
+
+  createOrder(orderPayload: any): Observable<any> {
+    const orderUrl = 'http://localhost:3000/order';  // Adjust the URL for order creation
+    return this.http.post<any>(orderUrl, orderPayload);
   }
 }

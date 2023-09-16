@@ -2,10 +2,21 @@
 
 .cart {
   padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
   color: #333;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+h2 i {
+  margin-right: 10px;
   font-size: 1.5rem;
 }
 
@@ -14,10 +25,15 @@ h2 {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.cart-item:hover {
+  transform: translateY(-5px);
 }
 
 .cart-item-details p {
@@ -33,10 +49,15 @@ button {
   background-color: #ff5252;
   color: #fff;
   border: none;
-  padding: 5px 10px;
+  padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
+  font-size: 1rem;
+}
+
+button i {
+  margin-right: 5px;
 }
 
 button:hover {
@@ -45,20 +66,33 @@ button:hover {
 
 .cart-summary {
   margin-top: 20px;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 15px;
+  background: linear-gradient(to right, #f7f7f7, #e0e0e0);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cart-summary p {
+  margin: 10px 0;
+}
+.cart-item-quantity > p {
+  margin-right: 20px;
 }
 
 .checkout-button {
   background-color: #007bff;
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 25px;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 20px;
   transition: background-color 0.2s ease-in-out;
+  font-size: 1rem;
+}
+
+.checkout-button i {
+  margin-right: 10px;
 }
 
 .checkout-button:hover {
@@ -80,8 +114,9 @@ button:hover {
 }
 
 /* No Products Added Styles */
-p.no-products {
+.no-products {
   color: #888;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 20px;
 }
-
-/* Adjust styles as needed to match your design preferences */

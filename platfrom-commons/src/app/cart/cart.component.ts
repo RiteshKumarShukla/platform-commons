@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../cart.service';
-import { CartDataService } from '../cart-data.service';
+
+interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
 
 @Component({
   selector: 'app-cart',
@@ -9,29 +15,37 @@ import { CartDataService } from '../cart-data.service';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  cartItems: any[] = [];
+  cartItems: CartItem[] = [];
 
   constructor(
     private cartService: CartService,
-    private cartDataService: CartDataService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    // Fetch cart items from the server using the CartService
-    this.cartService.getCartItems().subscribe((cartItems) => {
-      this.cartItems = cartItems;
-      // Also, set cart items in CartDataService
-      this.cartDataService.setCartItems(cartItems);
-    });
+    this.fetchCartItems();
+  }
+
+  fetchCartItems(): void {
+    this.cartService.getCartItems().subscribe(
+      (cartItems) => {
+        this.cartItems = cartItems;
+      },
+      (error) => {
+        console.error('Error fetching cart items:', error);
+      }
+    );
   }
 
   removeFromCart(productId: number): void {
-    this.cartService.removeFromCart(productId).subscribe((cartItems) => {
-      this.cartItems = cartItems;
-      // Also, update cart items in CartDataService if needed
-      this.cartDataService.setCartItems(cartItems);
-    });
+    this.cartService.removeFromCart(productId).subscribe(
+      () => {
+        this.fetchCartItems();
+      },
+      (error) => {
+        console.error('Error removing item from cart:', error);
+      }
+    );
   }
 
   calculateOrderTotal(): number {
@@ -39,29 +53,33 @@ export class CartComponent implements OnInit {
   }
 
   calculateEstimatedDeliveryDate(): string {
-    // Get the current date
     const currentDate = new Date();
-
     const estimatedDeliveryDate = new Date(currentDate);
     estimatedDeliveryDate.setDate(currentDate.getDate() + 3);
-
-    const formattedDate = `${estimatedDeliveryDate.getFullYear()}-${this.formatNumber(
+    return `${estimatedDeliveryDate.getFullYear()}-${this.formatNumber(
       estimatedDeliveryDate.getMonth() + 1
     )}-${this.formatNumber(estimatedDeliveryDate.getDate())}`;
-  
-    return formattedDate;
   }
-  
 
   formatNumber(n: number): string {
     return n < 10 ? `0${n}` : `${n}`;
   }
-  
 
   checkout(): void {
-    console.log('Cart Items:', this.cartItems);
-    this.cartDataService.setCartItems(this.cartItems);
-    // Navigate to "confirm-order" route
-    this.router.navigate(['/confirm-order']);
+    const orderPayload = {
+      cartItems: this.cartItems,
+      orderTotal: this.calculateOrderTotal(),
+      estimatedDeliveryDate: this.calculateEstimatedDeliveryDate()
+    };
+
+    this.cartService.createOrder(orderPayload).subscribe(
+      (response) => {
+        console.log('Order created:', response);
+        this.router.navigate(['/confirm-order']);
+      },
+      (error) => {
+        console.error('Error creating order:', error);
+      }
+    );
   }
 }

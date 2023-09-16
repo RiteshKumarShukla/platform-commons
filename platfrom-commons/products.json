@@ -211,5 +211,46 @@
       "weight": 100
     }
   ],
-  "cart": []
+  "cart": [
+    {
+      "id": 3,
+      "name": "Samsung Universe 9",
+      "price": 1249,
+      "image": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+      "weight": 220,
+      "quantity": 1
+    }
+  ],
+  "order": [
+    {
+      "cartItems": [
+        {
+          "id": 3,
+          "name": "Samsung Universe 9",
+          "price": 1249,
+          "image": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+          "weight": 220,
+          "quantity": 1
+        }
+      ],
+      "orderTotal": 1249,
+      "estimatedDeliveryDate": "2023-09-19",
+      "id": 1
+    },
+    {
+      "cartItems": [
+        {
+          "id": 3,
+          "name": "Samsung Universe 9",
+          "price": 1249,
+          "image": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+          "weight": 220,
+          "quantity": 2
+        }
+      ],
+      "orderTotal": 2498,
+      "estimatedDeliveryDate": "2023-09-19",
+      "id": 2
+    }
+  ]
 }

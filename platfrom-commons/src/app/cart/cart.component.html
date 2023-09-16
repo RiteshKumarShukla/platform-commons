@@ -1,23 +1,23 @@
 <div class="cart">
-  <h2>Your Cart</h2>
+  <h2>Your Cart <i class="fas fa-shopping-cart"></i></h2>
   <div *ngIf="cartItems.length > 0; else noProducts">
     <div class="cart-item" *ngFor="let item of cartItems">
       <div class="cart-item-details">
-        <p>{{ item.name }}</p>
-        <p>Price: ${{ item.price }}</p>
+        <p><i class="fas fa-box"></i> {{ item.name }}</p>
+        <p><i class="fas fa-dollar-sign"></i> Price: ${{ item.price }}</p>
       </div>
       <div class="cart-item-quantity">
-        <p>Quantity: {{ item.quantity }}</p>
-        <button (click)="removeFromCart(item.id)">Remove</button>
+        <p><i class="fas fa-shopping-basket"></i> Quantity: {{ item.quantity }}</p>
+        <button (click)="removeFromCart(item.id)"><i class="fas fa-trash-alt"></i></button>
       </div>
     </div>
     <div class="cart-summary">
-      <p>Order Total: ${{ calculateOrderTotal() }}</p>
-      <p>Estimated Delivery Date: {{ calculateEstimatedDeliveryDate() }}</p>
+      <p>Total: ${{ calculateOrderTotal() }}</p>
+      <p>Estimated Delivery: {{ calculateEstimatedDeliveryDate() }}</p>
     </div>
-    <button class="checkout-button" (click)="checkout()">Checkout</button>
+    <button class="checkout-button" (click)="checkout()"><i class="fas fa-credit-card"></i> Checkout</button>
   </div>
   <ng-template #noProducts>
-    <p>No products added to the cart.</p>
+    <p class="no-products"><i class="fas fa-exclamation-circle"></i> No products added to the cart.</p>
   </ng-template>
 </div>
