@@ -1,0 +1,52 @@
+/* confirm-order.component.css */
+
+.confirm-order {
+  padding: 20px;
+}
+
+h2 {
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.order-details {
+  margin-top: 20px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.item-details p {
+  margin: 0;
+}
+
+.item-quantity {
+  display: flex;
+  align-items: center;
+}
+
+.order-total {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  .order-item {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Adjust styles as needed to match your design preferences */
