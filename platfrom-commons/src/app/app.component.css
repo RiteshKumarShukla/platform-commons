@@ -70,3 +70,32 @@ nav {
   text-decoration: underline;
   color: #00a0dc;
 }
+
+
+/* Footer styles */
+footer {
+  color:#4a154b;
+  background-color:lightgrey;
+  text-align: center;
+  padding: 20px;
+  margin-top: 70px;
+}
+
+/* Footer links styles */
+.footer-links a {
+  color:#4a154b;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 1.2em;
+}
+
+.footer-links a:hover {
+  color:#00a0dc
+}
+
+/* Credit text style */
+.credit {
+  margin-top: 10px;
+  font-size: 0.9em;
+  /* color: #ccc; */
+}
