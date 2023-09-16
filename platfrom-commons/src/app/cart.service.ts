@@ -8,6 +8,9 @@ import { map, switchMap } from 'rxjs/operators';
 })
 export class CartService {
   private cartSubject = new BehaviorSubject<any[]>([]);
+  private cartControlsSubject = new BehaviorSubject<{ [productId: number]: { isAdding: boolean; quantity: number } }>({});
+  cartControls$ = this.cartControlsSubject.asObservable();
+
   private cartUrl = 'http://localhost:3000/cart';
 
   constructor(private http: HttpClient) {
@@ -56,7 +59,7 @@ export class CartService {
 
       // Make a PATCH request to update the cart item quantity on the server
       this.http.patch(`${this.cartUrl}/${productId}`, { quantity: product.quantity }).subscribe();
-      
+
       this.cartSubject.next([...this.cartSubject.value]);
     }
   }

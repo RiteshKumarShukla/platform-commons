@@ -6,9 +6,9 @@
     <div class="menu">
       <a routerLink="/catalogue" routerLinkActive="active">Catalogue</a>
       <a routerLink="/cart" routerLinkActive="active" class="cart-icon">
-        <!-- <i class='fas fa-shopping-cart fa-spin fa-2x'></i> -->
+  
         <i class='fas fa-cart-plus fa-lg'></i>
-        <span class="cart-count">3</span> 
+        <span class="cart-count">{{ cartCount }}</span> 
       </a>
     </div>
   </nav>

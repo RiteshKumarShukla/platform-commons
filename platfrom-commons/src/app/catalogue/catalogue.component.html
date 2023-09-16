@@ -23,7 +23,7 @@
     <!-- Show Add to Cart button or quantity controls -->
     <ng-container *ngIf="!cartControls[product.id] || cartControls[product.id].quantity === 0">
       <button class="add-to-cart-button" (click)="addToCart(product)">
-        <i class="fas fa-cart-plus"></i> Add to Cart
+        <i class='fas fa-shopping-cart fa-spin fa-1x'></i> Add to Cart
       </button>
     </ng-container>
     <ng-container *ngIf="cartControls[product.id] && cartControls[product.id].quantity > 0">
@@ -32,6 +32,7 @@
           <i class="fas fa-minus"></i>
         </button>
         <span class="quantity">{{ cartControls[product.id].quantity }}</span>
+
         <button (click)="increaseQuantity(product.id)">
           <i class="fas fa-plus"></i>
         </button>
