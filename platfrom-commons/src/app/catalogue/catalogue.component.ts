@@ -24,6 +24,7 @@ export class CatalogueComponent implements OnInit {
       this.products = data;
     });
 
+    
     this.cartService.getCartItems().subscribe((data) => {
       this.cartItems = data;
     });
@@ -69,27 +70,33 @@ export class CatalogueComponent implements OnInit {
   }
   increaseQuantity(productId: number): void {
     const cartItem = this.cartItems.find((item) => item.id === productId);
-    if (cartItem && cartItem.quantity >= 0) {
+    if (cartItem) {
       cartItem.quantity++;
-  
-      // Make a PATCH request to update the cart item quantity
       this.cartService.increaseCartItemQuantity(productId);
     }
   }
   
   decreaseQuantity(productId: number): void {
-    const cartItem = this.cartItems.find(item => item.id === productId);
-    if (cartItem && cartItem.quantity > 0) {
-      cartItem.quantity--;
-
-      if (cartItem.quantity === 0) {
-        this.cartControls[productId].isAdding = false;
+    const cartItem = this.cartItems.find((item) => item.id === productId);
+    if (cartItem) {
+      if (cartItem.quantity > 0) {
+        cartItem.quantity--;
+  
+        if (cartItem.quantity === 0) {
+          // Remove the product from the cart
+          const index = this.cartItems.indexOf(cartItem);
+          if (index !== -1) {
+            this.cartItems.splice(index, 1);
+          }
+          // Replace UI with "Add to Cart" button
+          this.cartControls[productId].quantity = 0;
+        } else {
+          this.cartService.decreaseCartItemQuantity(productId);
+        }
       }
-
-      // Use decreaseCartItemQuantity instead of updateCartItemQuantity
-      this.cartService.decreaseCartItemQuantity(productId);
     }
   }
+  
       
   onSearch(): void {
     if (this.searchText.trim() !== '') {

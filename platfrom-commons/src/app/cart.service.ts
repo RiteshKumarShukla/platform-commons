@@ -56,7 +56,6 @@ export class CartService {
     const product = this.cartSubject.value.find(item => item.id === productId);
     if (product) {
       product.quantity++;
-
       // Make a PATCH request to update the cart item quantity on the server
       this.http.patch(`${this.cartUrl}/${productId}`, { quantity: product.quantity }).subscribe();
 
@@ -91,5 +90,10 @@ export class CartService {
         return this.fetchCartItems();
       })
     );
+  }
+
+  createOrder(orderPayload: any): Observable<any> {
+    const orderUrl = 'http://localhost:3000/order';  // Adjust the URL for order creation
+    return this.http.post<any>(orderUrl, orderPayload);
   }
 }

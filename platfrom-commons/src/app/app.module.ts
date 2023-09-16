@@ -7,7 +7,7 @@ import { CatalogueComponent } from './catalogue/catalogue.component';
 import { CartComponent } from './cart/cart.component';
 import { FormsModule } from '@angular/forms';
 import { ConfirmOrderComponent } from './confirm-order/confirm-order.component';
-import { CartService } from './cart.service';
+import { OrderService } from './order.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,7 @@ import { CartService } from './cart.service';
     AppRoutingModule,
     FormsModule,
   ],
-  providers: [CartService],
+  providers: [OrderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

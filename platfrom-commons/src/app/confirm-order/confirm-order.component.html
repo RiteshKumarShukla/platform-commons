@@ -1,14 +1,28 @@
 <div class="confirm-order">
-  <h2>Order Summary</h2>
-  <div class="order-details">
-    <div class="order-item" *ngFor="let item of cartItems">
+  <h2><i class="fas fa-shopping-cart"></i> Order Summary</h2>
+
+  <div class="order-details" *ngIf="orderData">
+    <div class="item-details">
+      <p>Order ID: {{ orderData.id }}</p>
+      <p>Order Total: ${{ orderData.orderTotal }}</p>
+      <p>Estimated Delivery Date: {{ orderData.estimatedDeliveryDate }}</p>
+    </div>
+  </div>
+
+  <h3>Cart Items:</h3>
+  <div *ngIf="orderData && orderData.cartItems && orderData.cartItems.length > 0">
+    <div *ngFor="let item of orderData.cartItems" class="order-item">
       <div class="item-details">
-        <p>{{ item.name }}</p>
-        <p>Price: ${{ item.price }}</p>
-      </div>
-      <div class="item-quantity">
-        <p>Quantity: {{ item.quantity }}</p>
+        <p>Product ID: {{ item.id }}</p>
+        <p>Product Name: {{ item.name }}</p>
+        <p><i class="fas fa-dollar-sign"></i> Price: ${{ item.price }}</p>
+        <p>Image: <img [src]="item.image" alt="Product Image"></p>
+        <p>Weight: {{ item.weight }} g</p>
+        <p><i class="fas fa-shopping-basket"></i> Quantity: {{ item.quantity }}</p>
       </div>
     </div>
+  </div>
+  <div *ngIf="!orderData || !orderData.cartItems || orderData.cartItems.length === 0">
+    <p>No items in the cart.</p>
   </div>
 </div>
