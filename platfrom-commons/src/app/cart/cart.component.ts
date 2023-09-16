@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CartService } from '../cart.service'; // Import CartService
-import { CartDataService } from '../cart-data.service'; // Import CartDataService
+import { CartService } from '../cart.service';
+import { CartDataService } from '../cart-data.service';
 
 @Component({
   selector: 'app-cart',
@@ -13,24 +13,25 @@ export class CartComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    private cartDataService: CartDataService, // Inject CartDataService
+    private cartDataService: CartDataService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    // Fetch cart items from the CartService
-    this.cartService.getCartItems().subscribe((data) => {
-      this.cartItems = data;
+    // Fetch cart items from the server using the CartService
+    this.cartService.getCartItems().subscribe((cartItems) => {
+      this.cartItems = cartItems;
       // Also, set cart items in CartDataService
-      this.cartDataService.setCartItems(data);
+      this.cartDataService.setCartItems(cartItems);
     });
   }
 
   removeFromCart(productId: number): void {
-    // Remove item from the cart using the CartService
-    this.cartService.removeFromCart(productId);
-    // Update cart items in CartDataService
-    this.cartDataService.setCartItems(this.cartItems);
+    this.cartService.removeFromCart(productId).subscribe((cartItems) => {
+      this.cartItems = cartItems;
+      // Also, update cart items in CartDataService if needed
+      this.cartDataService.setCartItems(cartItems);
+    });
   }
 
   calculateOrderTotal(): number {
@@ -38,9 +39,24 @@ export class CartComponent implements OnInit {
   }
 
   calculateEstimatedDeliveryDate(): string {
-    // Implement logic to calculate estimated delivery date here
-    return '2-3 days'; // Example: Replace with actual calculation
+    // Get the current date
+    const currentDate = new Date();
+
+    const estimatedDeliveryDate = new Date(currentDate);
+    estimatedDeliveryDate.setDate(currentDate.getDate() + 3);
+
+    const formattedDate = `${estimatedDeliveryDate.getFullYear()}-${this.formatNumber(
+      estimatedDeliveryDate.getMonth() + 1
+    )}-${this.formatNumber(estimatedDeliveryDate.getDate())}`;
+  
+    return formattedDate;
   }
+  
+
+  formatNumber(n: number): string {
+    return n < 10 ? `0${n}` : `${n}`;
+  }
+  
 
   checkout(): void {
     console.log('Cart Items:', this.cartItems);
