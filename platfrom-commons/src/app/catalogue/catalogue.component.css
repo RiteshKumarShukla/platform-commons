@@ -1,48 +1,44 @@
-/* Add this CSS in your component's CSS file (e.g., catalogue.component.css) */
-
-/* Grid container for the product cards */
+/* Styling for the entire product grid */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(300px, 1fr)
-  ); /* Adjust as needed */
-  gap: 16px; /* Adjust the gap between product cards */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid with a minimum width of 300px */
+  gap: 20px; /* Adjust the gap between product cards */
+  padding: 20px;
 }
 
-/* Styling for the product card */
+/* Styling for individual product cards */
 .product-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  height: 400px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   background-color: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  overflow: hidden;
 }
 
-/* Hover effect for the product card */
+/* Hover effect for product cards */
 .product-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Styling for the product image */
+/* Styling for product images */
 .product-card img {
   max-width: 100%;
   height: auto;
+  display: block;
 }
 
 /* Styling for product details (name, weight, price) */
 .product-card h3 {
   font-size: 1.2rem;
-  margin: 8px 0;
+  margin: 10px 0;
   color: #333;
 }
 
 .product-card p {
   font-size: 1rem;
-  margin: 4px 0;
+  margin: 8px 0;
   color: #777;
 }
 
@@ -51,12 +47,46 @@
   background-color: #007bff;
   color: #fff;
   border: none;
-  padding: 8px 16px;
+  padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
+  margin-top: 10px;
   transition: background-color 0.2s ease-in-out;
 }
 
 .product-card button:hover {
   background-color: #0056b3;
+}
+
+/* Styling for quantity controls */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.quantity-controls button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.quantity-controls button:hover {
+  background-color: #0056b3;
+}
+
+/* Styling for cart count in the navigation bar */
+.cart-count {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 50%;
+  padding: 4px 8px;
+  font-size: 0.8rem;
 }
